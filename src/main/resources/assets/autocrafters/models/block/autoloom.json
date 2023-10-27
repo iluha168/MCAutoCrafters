@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "bottom": "autocrafters:block/autoloom_bottom",
+    "front": "autocrafters:block/autoloom_front",
+    "side": "autocrafters:block/autoloom_side",
+    "top": "autocrafters:block/autoloom_top"
+  }
+}

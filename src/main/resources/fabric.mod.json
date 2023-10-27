@@ -1,0 +1,36 @@
+{
+	"schemaVersion": 1,
+	"id": "autocrafters",
+	"version": "0.9",
+	"name": "Automatic Crafters",
+	"description": "Adds 1.21 Crafter-style auto Loom table!",
+	"authors": [
+		"iluha168"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/autocrafters/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.iluha168.ServerMod"
+		],
+		"client": [
+			"com.iluha168.ClientMod"
+		]
+	},
+	"mixins": [
+	],
+	"depends": {
+		"fabricloader": ">=0.14.23",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		
+	}
+}
