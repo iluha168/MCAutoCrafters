@@ -9,10 +9,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.BlockMirror;
-import net.minecraft.util.BlockRotation;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 
 public class AutoLoomBlock extends BaseAutoBlock {
@@ -32,18 +30,8 @@ public class AutoLoomBlock extends BaseAutoBlock {
     }
 
     @Override
-    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        super.appendProperties(builder.add(Properties.FACING));
-    }
-
-    @Override
-    public BlockState rotate(BlockState state, BlockRotation rotation) {
-        return state.with(Properties.FACING, rotation.rotate(state.get(Properties.FACING)));
-    }
-
-    @Override
-    public BlockState mirror(BlockState state, BlockMirror mirror) {
-        return state.rotate(mirror.getRotation(state.get(Properties.FACING)));
+    public SoundEvent getCraftSound() {
+        return SoundEvents.UI_LOOM_TAKE_RESULT;
     }
 
     @Override

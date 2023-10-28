@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "autocrafters",
-	"version": "0.9",
+	"version": "0.9.0.1",
 	"name": "Automatic Crafters",
 	"description": "Adds 1.21 Crafter-style auto Loom table!",
 	"authors": [

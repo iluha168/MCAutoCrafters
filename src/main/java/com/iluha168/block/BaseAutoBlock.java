@@ -21,9 +21,13 @@ import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.BlockMirror;
+import net.minecraft.util.BlockRotation;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
@@ -44,6 +48,8 @@ public abstract class BaseAutoBlock extends BlockWithEntity {
             .with(Properties.FACING, Direction.NORTH)
         );
     }
+
+    public abstract SoundEvent getCraftSound();
 
     @Override
     public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
@@ -82,6 +88,7 @@ public abstract class BaseAutoBlock extends BlockWithEntity {
         }
         if(outputStack.getCount() > 0){
             world.syncWorldEvent(WorldEvents.DISPENSER_ACTIVATED, pos, side.getId());
+            world.playSound(null, pos, getCraftSound(), SoundCategory.BLOCKS);
             ItemDispenserBehavior.spawnItem(world, outputStack, 6, side, 
                 DispenserBlock.getOutputLocation(new BlockPointerImpl(world, pos))
             );
@@ -138,7 +145,17 @@ public abstract class BaseAutoBlock extends BlockWithEntity {
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(Properties.POWERED, Properties.TRIGGERED);
+        builder.add(Properties.POWERED, Properties.TRIGGERED, Properties.FACING);
+    }
+
+    @Override
+    public BlockState rotate(BlockState state, BlockRotation rotation) {
+        return state.with(Properties.FACING, rotation.rotate(state.get(Properties.FACING)));
+    }
+
+    @Override
+    public BlockState mirror(BlockState state, BlockMirror mirror) {
+        return state.rotate(mirror.getRotation(state.get(Properties.FACING)));
     }
 
     @Override
