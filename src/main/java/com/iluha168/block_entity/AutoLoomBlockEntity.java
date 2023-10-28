@@ -126,12 +126,8 @@ public class AutoLoomBlockEntity extends BaseAutoBlockEntity {
 
     @Override
     public int getComparatorOutput() {
-        if(propertyDelegate.get(0) != -1){
-            int stacksFilled = 0;
-            for(int i = 0; i < 2; i++)
-                stacksFilled += getStack(i).isEmpty()? 0:1;
-            return stacksFilled;
-        }
+        if(propertyDelegate.get(0) != -1)
+            return super.getComparatorOutput();
         return 0;
     }
 

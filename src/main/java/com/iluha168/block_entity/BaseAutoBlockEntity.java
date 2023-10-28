@@ -34,7 +34,13 @@ public abstract class BaseAutoBlockEntity extends BlockEntity implements SidedIn
     }
 
     public abstract ItemStack craft();
-    public abstract int getComparatorOutput();
+    
+    public int getComparatorOutput(){
+        int stacksFilled = 0;
+        for(int i = 0; i < size(); i++)
+            stacksFilled += getStack(i).isEmpty()? 0:1;
+        return stacksFilled;
+    }
 
 //NAMED SCREEN FACTORY IMPLEMENTATION
     @Override

@@ -1,0 +1,6 @@
+{
+  "parent": "autocrafters:block/autogrindstone",
+  "textures": {
+    "front": "autocrafters:block/autogrindstone_front_triggered"
+  }
+}

@@ -26,10 +26,10 @@ public abstract class BaseAutoScreenHandler extends ScreenHandler {
     }
 
     public abstract boolean canInsert(int slot, ItemStack stack);
-    public abstract ItemStack getMachineOutput();
+    public abstract ItemStack getOutputPreview();
 
     public void updateOutputSlot(){
-        this.outputSlot.setStackNoCallbacks(getMachineOutput());
+        this.outputSlot.setStackNoCallbacks(getOutputPreview());
     }
 
     @Override
@@ -58,18 +58,5 @@ public abstract class BaseAutoScreenHandler extends ScreenHandler {
             slot.markDirty();
         }
         return newStack;
-    }
-
-    public class CheckingSlot extends Slot {
-        BaseAutoScreenHandler bash;
-        public CheckingSlot(BaseAutoScreenHandler bash /*XD*/, int index, int x, int y) {
-            super(bash.invInput, index, x, y);
-            this.bash = bash;
-        }
-        
-        @Override
-        public boolean canInsert(ItemStack stack) {
-            return bash.canInsert(id, stack);
-        }
     }
 }

@@ -1,0 +1,97 @@
+{
+  "variants": {
+    "triggered=false,facing=east,powered=false": {
+      "model": "autocrafters:block/autogrindstone",
+      "y": 90
+    },
+    "triggered=false,facing=east,powered=true": {
+      "model": "autocrafters:block/autogrindstone_on",
+      "y": 90
+    },
+    "triggered=false,facing=north,powered=false": {
+      "model": "autocrafters:block/autogrindstone"
+    },
+    "triggered=false,facing=north,powered=true": {
+      "model": "autocrafters:block/autogrindstone_on"
+    },
+    "triggered=false,facing=south,powered=false": {
+      "model": "autocrafters:block/autogrindstone",
+      "y": 180
+    },
+    "triggered=false,facing=south,powered=true": {
+      "model": "autocrafters:block/autogrindstone_on",
+      "y": 180
+    },
+    "triggered=false,facing=west,powered=false": {
+      "model": "autocrafters:block/autogrindstone",
+      "y": 270
+    },
+    "triggered=false,facing=west,powered=true": {
+      "model": "autocrafters:block/autogrindstone_on",
+      "y": 270
+    },
+    "triggered=false,facing=down,powered=false": {
+      "model": "autocrafters:block/autogrindstone",
+      "x": 90
+    },
+    "triggered=false,facing=down,powered=true": {
+      "model": "autocrafters:block/autogrindstone_on",
+      "x": 90
+    },
+    "triggered=false,facing=up,powered=false": {
+      "model": "autocrafters:block/autogrindstone",
+      "x": 270
+    },
+    "triggered=false,facing=up,powered=true": {
+      "model": "autocrafters:block/autogrindstone",
+      "x": 270
+    },
+    
+    "triggered=true,facing=east,powered=false": {
+      "model": "autocrafters:block/autogrindstone_triggered",
+      "y": 90
+    },
+    "triggered=true,facing=east,powered=true": {
+      "model": "autocrafters:block/autogrindstone_on_triggered",
+      "y": 90
+    },
+    "triggered=true,facing=north,powered=false": {
+      "model": "autocrafters:block/autogrindstone_triggered"
+    },
+    "triggered=true,facing=north,powered=true": {
+      "model": "autocrafters:block/autogrindstone_on_triggered"
+    },
+    "triggered=true,facing=south,powered=false": {
+      "model": "autocrafters:block/autogrindstone_triggered",
+      "y": 180
+    },
+    "triggered=true,facing=south,powered=true": {
+      "model": "autocrafters:block/autogrindstone_on_triggered",
+      "y": 180
+    },
+    "triggered=true,facing=west,powered=false": {
+      "model": "autocrafters:block/autogrindstone_triggered",
+      "y": 270
+    },
+    "triggered=true,facing=west,powered=true": {
+      "model": "autocrafters:block/autogrindstone_on_triggered",
+      "y": 270
+    },
+    "triggered=true,facing=down,powered=false": {
+      "model": "autocrafters:block/autogrindstone_triggered",
+      "x": 90
+    },
+    "triggered=true,facing=down,powered=true": {
+      "model": "autocrafters:block/autogrindstone_on_triggered",
+      "x": 90
+    },
+    "triggered=true,facing=up,powered=false": {
+      "model": "autocrafters:block/autogrindstone_triggered",
+      "x": 270
+    },
+    "triggered=true,facing=up,powered=true": {
+      "model": "autocrafters:block/autogrindstone_triggered",
+      "x": 270
+    }
+  }
+}

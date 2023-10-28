@@ -1,6 +1,7 @@
 {
   "values": [
-    "autocrafters:autoloom"
+    "autocrafters:autoloom",
+    "autocrafters:autogrindstone"
   ],
   "replace": false
 }

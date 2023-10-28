@@ -1,8 +1,8 @@
 package com.iluha168;
 
-import com.iluha168.block.AutoLoomBlock;
-import com.iluha168.block_entity.AutoLoomBlockEntity;
-import com.iluha168.screen_handler.AutoLoomScreenHandler;
+import com.iluha168.block.*;
+import com.iluha168.block_entity.*;
+import com.iluha168.screen_handler.*;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
@@ -28,6 +28,19 @@ public class ServerMod implements ModInitializer {
 		});
 		ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(content -> {
 			content.addAfter(Items.LOOM, AutoLoomBlock.BLOCK_ITEM);
+		});
+
+		Identifier grindstoneID = new Identifier(modId, "autogrindstone");
+		Registry.register(Registries.BLOCK, grindstoneID, AutoGrindstoneBlock.BLOCK     );
+		Registry.register(Registries.ITEM , grindstoneID, AutoGrindstoneBlock.BLOCK_ITEM);
+		Registry.register(Registries.BLOCK_ENTITY_TYPE, grindstoneID, AutoGrindstoneBlockEntity.BLOCK_ENTITY);
+        Registry.register(Registries.SCREEN_HANDLER, grindstoneID, AutoGrindstoneScreenHandler.SCREEN_HANDLER);
+
+		ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(content -> {
+			content.add(AutoGrindstoneBlock.BLOCK_ITEM);
+		});
+		ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(content -> {
+			content.addAfter(Items.GRINDSTONE, AutoGrindstoneBlock.BLOCK_ITEM);
 		});
 	}
 }

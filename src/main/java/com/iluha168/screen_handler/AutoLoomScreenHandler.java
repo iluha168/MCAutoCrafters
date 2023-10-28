@@ -4,6 +4,7 @@ import java.util.List;
 import com.google.common.collect.ImmutableList;
 
 import com.iluha168.block_entity.AutoLoomBlockEntity;
+import com.iluha168.slots.CheckingSlot;
 import com.iluha168.slots.PreviewSlot;
 
 import net.minecraft.block.entity.BannerPattern;
@@ -48,9 +49,9 @@ public class AutoLoomScreenHandler extends BaseAutoScreenHandler {
         this.propertyDelegate = propertyDelegate;
         this.addProperties(propertyDelegate);
 
-        this.bannerSlot = this.addSlot(new CheckingSlot(this, 0, 13, 26));
-        this.dyeSlot = this.addSlot(new CheckingSlot(this, 1, 33, 26));
-        this.patternSlot = this.addSlot(new CheckingSlot(this, 2, 23, 45));
+        this.bannerSlot = this.addSlot(new CheckingSlot(this, invInput, 0, 13, 26));
+        this.dyeSlot = this.addSlot(new CheckingSlot(this, invInput, 1, 33, 26));
+        this.patternSlot = this.addSlot(new CheckingSlot(this, invInput, 2, 23, 45));
         this.outputSlot = this.addSlot(new PreviewSlot(invOutput, 0, 143, 33));
 
         for(int i = 0; i < 3; ++i) {
@@ -144,7 +145,7 @@ public class AutoLoomScreenHandler extends BaseAutoScreenHandler {
     }
 
     @Override
-    public ItemStack getMachineOutput(){
+    public ItemStack getOutputPreview(){
         BannerPattern pattern = getSelectedPattern();
         if(pattern == null) return ItemStack.EMPTY;
         ItemStack bannerStack = this.bannerSlot.getStack();

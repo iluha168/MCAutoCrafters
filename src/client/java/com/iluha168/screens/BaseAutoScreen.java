@@ -26,7 +26,7 @@ public abstract class BaseAutoScreen<T extends ScreenHandler> extends HandledScr
         super.render(matrices, mouseX, mouseY, delta);
         drawMouseoverTooltip(matrices, mouseX, mouseY);
     }
- 
+
     @Override
     protected void init() {
         super.init();
