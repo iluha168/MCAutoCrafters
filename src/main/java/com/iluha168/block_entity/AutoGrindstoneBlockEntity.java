@@ -161,15 +161,15 @@ public class AutoGrindstoneBlockEntity extends BaseAutoBlockEntity {
 	public ItemStack craft() {
         ItemStack inputStack0 = getStack(0);
         ItemStack inputStack1 = getStack(1);
+        int xp = (int) Math.ceil((float)(getGrindXPValue(inputStack0)+getGrindXPValue(inputStack1)) * 0.5f);
+        if(xp > 0){
+            xp = world.getRandom().nextBetween(xp, 2*xp-1);
+            ExperienceOrbEntity.spawn((ServerWorld)getWorld(), pos.toCenterPos().offset(world.getBlockState(pos).get(Properties.FACING), 0.4d), xp);
+        }
         ItemStack outStack = grind(inputStack0, inputStack1);
         if(!outStack.equals(ItemStack.EMPTY)){
             inputStack0.split(1);
             inputStack1.split(1);
-        }
-        int xp = (int) Math.ceil((float)(getGrindXPValue(inputStack0)+getGrindXPValue(inputStack1)) * 0.5f);
-        if(xp > 0){
-            xp = world.getRandom().nextBetween(xp, 2*xp-1);
-            ExperienceOrbEntity.spawn((ServerWorld)getWorld(), this.getPos().toCenterPos(), xp);
         }
         return outStack;
 	}
