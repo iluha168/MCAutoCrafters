@@ -1,9 +1,11 @@
 {
-  "parent": "minecraft:block/orientable_with_bottom",
+  "parent": "block/crafter",
   "textures": {
     "bottom": "autocrafters:block/autoloom_bottom",
-    "front": "autocrafters:block/autoloom_front",
-    "side": "autocrafters:block/autoloom_side",
-    "top": "autocrafters:block/autoloom_top"
+    "top": "autocrafters:block/autoloom_top",
+    "north": "autocrafters:block/autoloom_north",
+    "south": "autocrafters:block/autoloom_south",
+    "west": "autocrafters:block/autoloom_west",
+    "east": "autocrafters:block/autoloom_east"
   }
 }

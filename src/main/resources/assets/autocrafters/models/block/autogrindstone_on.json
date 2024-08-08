@@ -1,6 +1,0 @@
-{
-  "parent": "autocrafters:block/autogrindstone",
-  "textures": {
-    "pivot": "autocrafters:block/autogrindstone_pivot_on"
-  }
-}

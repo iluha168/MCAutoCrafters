@@ -1,36 +1,36 @@
 {
 	"schemaVersion": 1,
 	"id": "autocrafters",
-	"version": "0.9.0.3",
+	"version": "${version}",
 	"name": "Automatic Crafters",
-	"description": "Adds 1.21 Crafter-style auto Loom table!",
+	"description": "Adds Crafter-style redstone-powered counterparts for other manual workbenches.",
 	"authors": [
 		"iluha168"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/iluha168/MCAutoCrafters"
+		"homepage": "https://modrinth.com/mod/autocrafters",
+		"sources": "https://github.com/iluha168/MCAutoCrafters",
+		"discord": "https://discord.gg/8MeZTmMP7m"
 	},
 	"license": "MIT",
 	"icon": "assets/autocrafters/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"com.iluha168.ServerMod"
+			"com.iluha168.autocrafters.ServerMod"
 		],
 		"client": [
-			"com.iluha168.ClientMod"
+			"com.iluha168.autocrafters.ClientMod"
 		]
 	},
 	"mixins": [
 	],
 	"depends": {
-		"fabricloader": ">=0.14.23",
-		"minecraft": "~1.20.1",
-		"java": ">=17",
+		"fabricloader": ">=0.15.11",
+		"minecraft": ">=1.21",
+		"java": ">=21",
 		"fabric-api": "*"
 	},
 	"suggests": {
-		
 	}
 }

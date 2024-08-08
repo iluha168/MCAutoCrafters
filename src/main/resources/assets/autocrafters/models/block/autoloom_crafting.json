@@ -1,0 +1,9 @@
+{
+  "parent": "autocrafters:block/autoloom_triggered",
+  "textures": {
+    "top": "autocrafters:block/autoloom_top_crafting",
+    "north": "autocrafters:block/autoloom_north_crafting",
+    "west": "autocrafters:block/autoloom_west_crafting",
+    "east": "autocrafters:block/autoloom_east_crafting"
+  }
+}

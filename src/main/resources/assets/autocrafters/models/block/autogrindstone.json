@@ -1,46 +1,11 @@
 {
-    "parent": "block/block",
-    "textures": {
-        "pivot": "autocrafters:block/autogrindstone_pivot",
-        "round": "autocrafters:block/autogrindstone_round",
-        "side": "autocrafters:block/autogrindstone_side",
-        "front": "autocrafters:block/autogrindstone_front",
-        "particle": "autocrafters:block/autogrindstone_side"
-    },
-    "elements": [
-        {
-            "from": [12, 5, 5],
-            "to": [14, 11, 11],
-            "faces": {
-                "north": {"uv": [6, 0, 8, 6], "texture": "#pivot"},
-                "east": {"uv": [0, 0, 6, 6], "texture": "#pivot"},
-                "south": {"uv": [6, 0, 8, 6], "texture": "#pivot"},
-                "up": {"uv": [8, 0, 10, 6], "texture": "#pivot"},
-                "down": {"uv": [8, 0, 10, 6], "texture": "#pivot"}
-            }
-        },
-        {
-            "from": [2, 5, 5],
-            "to": [4, 11, 11],
-            "faces": {
-                "north": {"uv": [6, 0, 8, 6], "texture": "#pivot"},
-                "south": {"uv": [6, 0, 8, 6], "texture": "#pivot"},
-                "west": {"uv": [0, 0, 6, 6], "texture": "#pivot"},
-                "up": {"uv": [8, 0, 10, 6], "texture": "#pivot"},
-                "down": {"uv": [8, 0, 10, 6], "texture": "#pivot"}
-            }
-        },
-        {
-            "from": [4, 2, 2],
-            "to": [12, 14, 14],
-            "faces": {
-                "north": {"uv": [0, 0, 8, 12], "texture": "#front"},
-                "east": {"uv": [0, 0, 12, 12], "texture": "#side"},
-                "south": {"uv": [0, 0, 8, 12], "texture": "#round"},
-                "west": {"uv": [0, 0, 12, 12], "texture": "#side"},
-                "up": {"uv": [0, 0, 8, 12], "texture": "#round" },
-                "down": {"uv": [0, 0, 8, 12], "texture": "#round"}
-            }
-        }
-    ]
+  "parent": "block/crafter",
+  "textures": {
+    "bottom": "autocrafters:block/autogrindstone_bottom",
+    "top": "autocrafters:block/autogrindstone_top",
+    "north": "autocrafters:block/autogrindstone_north",
+    "south": "autocrafters:block/autogrindstone_south",
+    "west": "autocrafters:block/autogrindstone_west",
+    "east": "autocrafters:block/autogrindstone_east"
+  }
 }

@@ -1,0 +1,9 @@
+{
+  "parent": "autocrafters:block/autogrindstone_triggered",
+  "textures": {
+    "top": "autocrafters:block/autogrindstone_top_crafting",
+    "north": "autocrafters:block/autogrindstone_north_crafting",
+    "west": "autocrafters:block/autogrindstone_west_crafting",
+    "east": "autocrafters:block/autogrindstone_east_crafting"
+  }
+}
