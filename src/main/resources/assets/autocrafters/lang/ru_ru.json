@@ -1,5 +1,6 @@
 {
   "block.autocrafters.autoloom": "Ткач",
   "block.autocrafters.autogrindstone": "Точильщик",
-  "block.autocrafters.autofletching": "Лучник"
+  "block.autocrafters.autofletching": "Лучник",
+  "block.autocrafters.autocutter": "Резчик по камню"
 }

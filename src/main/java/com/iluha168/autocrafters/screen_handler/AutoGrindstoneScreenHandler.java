@@ -1,10 +1,10 @@
 package com.iluha168.autocrafters.screen_handler;
 
+import com.iluha168.autocrafters.block.AutoGrindstoneBlock;
 import com.iluha168.autocrafters.block_entity.AutoGrindstoneBlockEntity;
 
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.screen.ArrayPropertyDelegate;
@@ -25,10 +25,16 @@ public class AutoGrindstoneScreenHandler extends BaseAutoScreenHandler {
 
     //Client constructor
     public AutoGrindstoneScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, new AutoGrindstoneBlockEntity(playerInventory.player.getBlockPos(), null), new ArrayPropertyDelegate(1));
+        this(syncId, playerInventory, new AutoGrindstoneBlockEntity(
+                playerInventory.player.getBlockPos(),
+                AutoGrindstoneBlock.BLOCK.getDefaultState(),
+                playerInventory.player.getWorld()
+            ),
+            new ArrayPropertyDelegate(1)
+        );
     }
 
-    public AutoGrindstoneScreenHandler(int syncId, PlayerInventory playerInventory, SidedInventory inventory, PropertyDelegate propertyDelegate) {
+    public AutoGrindstoneScreenHandler(int syncId, PlayerInventory playerInventory, AutoGrindstoneBlockEntity inventory, PropertyDelegate propertyDelegate) {
         super(SCREEN_HANDLER, syncId, playerInventory, inventory);
         checkSize(inventory, 2);
         checkDataCount(propertyDelegate, 1);
@@ -75,12 +81,8 @@ public class AutoGrindstoneScreenHandler extends BaseAutoScreenHandler {
 
     @Override
     public ItemStack getOutputPreview() {
-        if(this.invInput instanceof AutoGrindstoneBlockEntity){
-            AutoGrindstoneBlockEntity grindstone = ((AutoGrindstoneBlockEntity)this.invInput);
-            if(grindstone.hasWorld())
-                return grindstone.constructVirtualGSH().getSlot(2).getStack();
-        }
-        return ItemStack.EMPTY;
+        AutoGrindstoneBlockEntity grindstone = ((AutoGrindstoneBlockEntity)this.invInput);
+        return grindstone.constructVirtualGSH().getSlot(2).getStack();
     }
 
     @Override

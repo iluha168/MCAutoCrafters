@@ -23,23 +23,29 @@ public class ServerMod implements ModInitializer {
 		Registry.register(Registries.BLOCK_ENTITY_TYPE, loomID, AutoLoomBlockEntity.BLOCK_ENTITY);
         Registry.register(Registries.SCREEN_HANDLER, loomID, AutoLoomScreenHandler.SCREEN_HANDLER);
 
-		ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(content -> {
-			content.addAfter(Items.CRAFTER, AutoLoomBlock.BLOCK_ITEM);
-		});
-
 		Identifier grindstoneID = Identifier.of(modId, "autogrindstone");
 		Registry.register(Registries.BLOCK, grindstoneID, AutoGrindstoneBlock.BLOCK     );
 		Registry.register(Registries.ITEM , grindstoneID, AutoGrindstoneBlock.BLOCK_ITEM);
 		Registry.register(Registries.BLOCK_ENTITY_TYPE, grindstoneID, AutoGrindstoneBlockEntity.BLOCK_ENTITY);
         Registry.register(Registries.SCREEN_HANDLER, grindstoneID, AutoGrindstoneScreenHandler.SCREEN_HANDLER);
 
-		ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(content -> {
-			content.addAfter(AutoLoomBlock.BLOCK_ITEM, AutoGrindstoneBlock.BLOCK_ITEM);
-		});
+		Identifier cutterID = Identifier.of(modId, "autocutter");
+		Registry.register(Registries.BLOCK, cutterID, AutoCutterBlock.BLOCK     );
+		Registry.register(Registries.ITEM , cutterID, AutoCutterBlock.BLOCK_ITEM);
+		Registry.register(Registries.BLOCK_ENTITY_TYPE, cutterID, AutoCutterBlockEntity.BLOCK_ENTITY);
+        Registry.register(Registries.SCREEN_HANDLER, cutterID, AutoCutterScreenHandler.SCREEN_HANDLER);
 
 		Identifier fletchingID = Identifier.of(modId, "autofletching");
 		Registry.register(Registries.BLOCK, fletchingID, AutoFletchingTableBlock.BLOCK     );
 		Registry.register(Registries.ITEM , fletchingID, AutoFletchingTableBlock.BLOCK_ITEM);
 		Registry.register(Registries.BLOCK_ENTITY_TYPE, fletchingID, AutoFletchingTableBlockEntity.BLOCK_ENTITY);
+
+		ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(content -> {
+			content.addAfter(Items.CRAFTER,
+				AutoLoomBlock.BLOCK_ITEM,
+				AutoGrindstoneBlock.BLOCK_ITEM,
+				AutoCutterBlock.BLOCK_ITEM
+			);
+		});
 	}
 }

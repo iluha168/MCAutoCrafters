@@ -19,6 +19,7 @@ import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.World;
 
 public class AutoGrindstoneBlockEntity extends BaseAutoBlockEntity {
     public static final int[] ALL_SLOTS = new int[]{0,1};
@@ -27,7 +28,12 @@ public class AutoGrindstoneBlockEntity extends BaseAutoBlockEntity {
         .build();
 
     public AutoGrindstoneBlockEntity(BlockPos pos, BlockState state) {
-        super(BLOCK_ENTITY, pos, state, 2);
+        super(BLOCK_ENTITY, pos, state, ALL_SLOTS.length);
+    }
+
+    public AutoGrindstoneBlockEntity(BlockPos pos, BlockState state, World world) {
+        super(BLOCK_ENTITY, pos, state, ALL_SLOTS.length);
+        this.setWorld(world);
     }
 
 	private final PropertyDelegate propertyDelegate = new PropertyDelegate() {

@@ -2,6 +2,7 @@ package com.iluha168.autocrafters.screen_handler;
 
 import java.util.List;
 import com.google.common.collect.ImmutableList;
+import com.iluha168.autocrafters.block.AutoLoomBlock;
 import com.iluha168.autocrafters.block_entity.AutoLoomBlockEntity;
 
 import net.minecraft.block.entity.BannerPattern;
@@ -41,7 +42,12 @@ public class AutoLoomScreenHandler extends BaseAutoScreenHandler {
 
     //Client constructor
     public AutoLoomScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, new AutoLoomBlockEntity(playerInventory.player.getBlockPos(), null), new ArrayPropertyDelegate(2));
+        this(syncId, playerInventory, new AutoLoomBlockEntity(
+                playerInventory.player.getBlockPos(),
+                AutoLoomBlock.BLOCK.getDefaultState()
+            ),
+            new ArrayPropertyDelegate(2)
+        );
     }
 
     public AutoLoomScreenHandler(int syncId, PlayerInventory playerInventory, AutoLoomBlockEntity inventory, PropertyDelegate propertyDelegate) {
