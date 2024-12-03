@@ -1,15 +1,13 @@
 package com.iluha168.autocrafters.screen_handler;
 
-import java.util.List;
-
 import com.iluha168.autocrafters.block.AutoCutterBlock;
 import com.iluha168.autocrafters.block_entity.AutoCutterBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.recipe.StonecuttingRecipe;
+import net.minecraft.recipe.display.CuttingRecipeDisplay;
 import net.minecraft.recipe.input.SingleStackRecipeInput;
 import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.screen.ArrayPropertyDelegate;
@@ -23,14 +21,14 @@ import net.minecraft.world.World;
 
 public class AutoCutterScreenHandler extends BaseAutoScreenHandler {
     public static final ScreenHandlerType<AutoCutterScreenHandler> SCREEN_HANDLER = new ScreenHandlerType<>(
-        (syncId, inventory) -> new AutoCutterScreenHandler(syncId, inventory),
+	    AutoCutterScreenHandler::new,
         FeatureFlags.VANILLA_FEATURES
     );
 
     private final Slot inputSlot;
     private final PropertyDelegate propertyDelegate;
     private final World world;
-    private List<RecipeEntry<StonecuttingRecipe>> recipesCache;
+    private CuttingRecipeDisplay.Grouping<StonecuttingRecipe> recipesCache;
 
     //Client constructor
     public AutoCutterScreenHandler(int syncId, PlayerInventory playerInventory) {
@@ -106,7 +104,7 @@ public class AutoCutterScreenHandler extends BaseAutoScreenHandler {
         return this.propertyDelegate.get(0);
     }
 
-    public List<RecipeEntry<StonecuttingRecipe>> getAvailableRecipes() {
+    public CuttingRecipeDisplay.Grouping<StonecuttingRecipe> getAvailableRecipes() {
         return this.recipesCache;
     }
 

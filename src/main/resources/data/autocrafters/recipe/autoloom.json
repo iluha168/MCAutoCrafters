@@ -1,23 +1,16 @@
 {
     "type": "minecraft:crafting_shaped",
+    "category": "redstone",
     "pattern": [
         "iii",
         "iLi",
         "RDR"
     ],
     "key": {
-        "i": {
-            "item": "minecraft:iron_ingot"
-        },
-        "L": {
-            "item": "minecraft:loom"
-        },
-        "R": {
-            "item": "minecraft:redstone"
-        },
-        "D": {
-            "item": "minecraft:dropper"
-        }
+        "i": "#c:ingots/iron",
+        "L": "minecraft:loom",
+        "R": "#c:dusts/redstone",
+        "D": "minecraft:dropper"
     },
     "result": {
         "id": "autocrafters:autoloom",

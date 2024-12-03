@@ -11,11 +11,11 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.render.OverlayTexture;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BannerBlockEntityRenderer;
 import net.minecraft.client.render.entity.model.EntityModelLayers;
-import net.minecraft.client.render.model.ModelLoader;
+import net.minecraft.client.render.model.ModelBaker;
 import net.minecraft.client.sound.PositionedSoundInstance;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.component.type.BannerPatternsComponent;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.BannerItem;
@@ -57,9 +57,10 @@ public class AutoLoomScreen extends BaseAutoScreen<AutoLoomScreenHandler> {
  
     @Override
     protected void init() {
+        assert this.client != null;
         super.init();
         this.titleY -= 2;
-        this.bannerField = this.client.getEntityModelLoader().getModelPart(EntityModelLayers.BANNER).getChild("flag");
+	    this.bannerField = this.client.getEntityModelLoader().getModelPart(EntityModelLayers.BANNER).getChild("flag");
         this.bannerField.pitch = 0.0F;
         this.bannerField.pivotY = -32.0F;
     }
@@ -77,38 +78,38 @@ public class AutoLoomScreen extends BaseAutoScreen<AutoLoomScreenHandler> {
         super.drawBackground(matrices, delta, mouseX, mouseY);
         int l = x + PATTERN_LIST_OFFSET_X;
         int m = y + PATTERN_LIST_OFFSET_Y;
-        List<RegistryEntry<BannerPattern>> list = getPatterns();
+        List<RegistryEntry<BannerPattern>> patterns = getPatterns();
 
         for(int i = 0; i <= 2; i++){
             Slot slot = handler.getSlot(i);
             if(!slot.hasStack())
-                matrices.drawGuiTexture(SLOT_TEXTURES[i], x + slot.x, y + slot.y, 0, 16, 16);
+                matrices.drawGuiTexture(RenderLayer::getGuiTextured, SLOT_TEXTURES[i], x + slot.x, y + slot.y, 16, 16);
         }
 
         mouseScrolled(0d, 0d, 0d, 0d);
-        matrices.drawGuiTexture(SCROLLER_TEXTURE, x+119, y+PATTERN_LIST_OFFSET_Y+(int)(41f*this.scrollPosition), 0, SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
+        matrices.drawGuiTexture(RenderLayer::getGuiTextured, SCROLLER_TEXTURE, x+119, y+PATTERN_LIST_OFFSET_Y+(int)(41f*this.scrollPosition), SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
         if(handler.getRedstonePower() == 1)
-            matrices.drawTexture(TEXTURE, x+9, y+24, 0, backgroundHeight, 44, 41);
+            matrices.drawTexture(RenderLayer::getGuiTextured, TEXTURE, x+9, y+24, 0f, (float) backgroundHeight, 44, 41, 256, 256);
 
         int selectedPatternIndex = handler.getSelectedPatternIndex();
         DiffuseLighting.disableGuiDepthLighting();
         loopBannerPatterns:
-        for(int n = 0; n < 4; n++) {
-            for(int o = 0; o < 4; o++) {
-                int p = n + this.visibleTopRow;
-                int q = p * 4 + o;
-                if (q >= list.size())
+        for(int row = 0; row < 4; row++) {
+            for(int col = 0; col < 4; col++) {
+                int rowI = row + this.visibleTopRow;
+                int i = rowI * 4 + col;
+                if (i >= patterns.size())
                     break loopBannerPatterns;
-                int px = l + o * PATTERN_ENTRY_SIZE;
-                int py = m + n * PATTERN_ENTRY_SIZE;
+                int px = l + col * PATTERN_ENTRY_SIZE;
+                int py = m + row * PATTERN_ENTRY_SIZE;
                 Identifier texture = 
-                    q == selectedPatternIndex?
+                    i == selectedPatternIndex?
                         PATTERN_SELECTED_TEXTURE:
                     mouseX >= px && mouseY >= py && mouseX < px + PATTERN_ENTRY_SIZE && mouseY < py + PATTERN_ENTRY_SIZE?
                         PATTERN_HIGHLIGHTED_TEXTURE:
                         PATTERN_TEXTURE;
-                matrices.drawGuiTexture(texture, px, py, 0, PATTERN_ENTRY_SIZE, PATTERN_ENTRY_SIZE);
-                this.drawBanner(matrices, list.get(q), px, py);
+                matrices.drawGuiTexture(RenderLayer::getGuiTextured, texture, px, py, PATTERN_ENTRY_SIZE, PATTERN_ENTRY_SIZE);
+                this.drawBanner(matrices, patterns.get(i), px, py);
             }
         }
         DiffuseLighting.enableGuiDepthLighting();
@@ -141,6 +142,8 @@ public class AutoLoomScreen extends BaseAutoScreen<AutoLoomScreenHandler> {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        assert this.client != null;
+        assert this.client.interactionManager != null;
         this.scrollbarClicked = false;
         int i = this.x + PATTERN_LIST_OFFSET_X;
         int j = this.y + PATTERN_LIST_OFFSET_Y;
@@ -153,7 +156,7 @@ public class AutoLoomScreen extends BaseAutoScreen<AutoLoomScreenHandler> {
                 int n = m * 4 + l;
                 if (d >= 0.0 && e >= 0.0 && d < PATTERN_ENTRY_SIZE && e < PATTERN_ENTRY_SIZE && handler.onButtonClick(this.client.player, n)) {
                     MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_LOOM_SELECT_PATTERN, 1f));
-                    this.client.interactionManager.clickButton(handler.syncId, n);
+	                this.client.interactionManager.clickButton(handler.syncId, n);
                     return true;
                 }
             }
@@ -169,23 +172,29 @@ public class AutoLoomScreen extends BaseAutoScreen<AutoLoomScreenHandler> {
         Item dyeItem = handler.getSlot(1).getStack().getItem();
         Item bannerItem = handler.getSlot(0).getStack().getItem();
 
-        DyeColor dyeColor = DyeColor.WHITE;
-        if(dyeItem instanceof DyeItem)
-            dyeColor = ((DyeItem)dyeItem).getColor();
+        DyeColor dyeColor = dyeItem instanceof DyeItem dye? dye.getColor() : DyeColor.WHITE;
+        DyeColor bannerColor = bannerItem instanceof BannerItem banner ? banner.getColor() : DyeColor.GRAY;
 
-        DyeColor bannerColor = DyeColor.GRAY; 
-        if(bannerItem instanceof BannerItem)
-            bannerColor = ((BannerItem)bannerItem).getColor();
+        DiffuseLighting.disableGuiDepthLighting();
 
-        MatrixStack matrixStack = new MatrixStack();
-        matrixStack.push();
-        matrixStack.translate(x + 0.5f, y + 16f, 0.0f);
-        matrixStack.scale(6f, -6f, 1f);
-        matrixStack.translate(1f, 1f, 0.5f);
-        matrixStack.scale(2f/3f, -2f/3f, -2f/3f);
+        context.getMatrices().push();
+        context.getMatrices().translate(x + 0.5f, y + 16f, 0.0f);
+        context.getMatrices().scale(6f, -6f, 1f);
+        context.getMatrices().translate(1f, 1f, 0.5f);
+        context.getMatrices().scale(2f/3f, -2f/3f, -2f/3f);
+
         BannerPatternsComponent patternComponent = (new BannerPatternsComponent.Builder()).add(pattern, dyeColor).build();
-        BannerBlockEntityRenderer.renderCanvas(matrixStack, context.getVertexConsumers(), 15728880, OverlayTexture.DEFAULT_UV, this.bannerField, ModelLoader.BANNER_BASE, true, bannerColor, patternComponent);
-        matrixStack.pop();
+        context.draw(vertexConsumers ->
+            BannerBlockEntityRenderer.renderCanvas(
+                context.getMatrices(), vertexConsumers,
+                0xF000F0, OverlayTexture.DEFAULT_UV,
+                this.bannerField, ModelBaker.BANNER_BASE, true,
+                bannerColor, patternComponent
+            )
+        );
+
+        context.getMatrices().pop();
         context.draw();
+        DiffuseLighting.enableGuiDepthLighting();
     }
 }

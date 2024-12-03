@@ -5,6 +5,7 @@ import java.util.UUID;
 import com.iluha168.autocrafters.block.AutoGrindstoneBlock;
 import com.iluha168.autocrafters.screen_handler.AutoGrindstoneScreenHandler;
 import com.mojang.authlib.GameProfile;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -23,7 +24,7 @@ import net.minecraft.world.World;
 
 public class AutoGrindstoneBlockEntity extends BaseAutoBlockEntity {
     public static final int[] ALL_SLOTS = new int[]{0,1};
-    public static final BlockEntityType<AutoGrindstoneBlockEntity> BLOCK_ENTITY = BlockEntityType.Builder
+    public static final BlockEntityType<AutoGrindstoneBlockEntity> BLOCK_ENTITY = FabricBlockEntityTypeBuilder
         .create(AutoGrindstoneBlockEntity::new, AutoGrindstoneBlock.BLOCK)
         .build();
 
@@ -39,7 +40,8 @@ public class AutoGrindstoneBlockEntity extends BaseAutoBlockEntity {
 	private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
         @Override
         public int get(int index) {
-			if(index != 0) throw new ArrayIndexOutOfBoundsException();
+			assert world != null;
+			assert index == 0;
             return world.getBlockState(pos).get(Properties.TRIGGERED)? 1:0;
         }
 
@@ -76,6 +78,7 @@ public class AutoGrindstoneBlockEntity extends BaseAutoBlockEntity {
 	}
 
     public GrindstoneScreenHandler constructVirtualGSH(){
+		assert world != null;
         PlayerEntity virtualPlayer = new PlayerEntity(
             world, pos, 0,
             new GameProfile(new UUID(0,0), "")
@@ -90,7 +93,7 @@ public class AutoGrindstoneBlockEntity extends BaseAutoBlockEntity {
             ScreenHandlerContext.create(world, pos.offset(getCachedState().get(Properties.ORIENTATION).getFacing()))
         );
         for(int slot : ALL_SLOTS)
-            gsh.getSlot(slot).setStack(getStack(slot));
+            gsh.getSlot(slot).setStack(this.getStack(slot));
         return gsh;
     }
 

@@ -33,13 +33,12 @@ public abstract class BaseAutoScreenHandler extends ScreenHandler {
 
     @Override
     public ItemStack quickMove(PlayerEntity player, int invSlot) {
-        ItemStack newStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(invSlot);
-        if (slot == null || !slot.hasStack()) {
+        if (!slot.hasStack()) {
             return ItemStack.EMPTY;
         }
         ItemStack originalStack = slot.getStack();
-        newStack = originalStack.copy();
+        ItemStack newStack = originalStack.copy();
         if (invSlot < invInput.size()) {
             if (!this.insertItem(originalStack, invInput.size(), this.slots.size(), true))
                 return ItemStack.EMPTY;

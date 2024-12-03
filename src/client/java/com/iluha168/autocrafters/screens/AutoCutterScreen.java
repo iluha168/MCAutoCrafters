@@ -4,14 +4,16 @@ import com.iluha168.autocrafters.ServerMod;
 import com.iluha168.autocrafters.screen_handler.AutoCutterScreenHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
-import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.recipe.display.SlotDisplayContexts;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.context.ContextParameterMap;
 import net.minecraft.util.math.MathHelper;
 
 public class AutoCutterScreen extends BaseAutoScreen<AutoCutterScreenHandler> {
@@ -56,15 +58,17 @@ public class AutoCutterScreen extends BaseAutoScreen<AutoCutterScreenHandler> {
 
     @Override
     protected void drawBackground(DrawContext matrices, float delta, int mouseX, int mouseY) {
+        assert this.client != null;
+        assert this.client.world != null;
         super.drawBackground(matrices, delta, mouseX, mouseY);
         int l = x + RECIPE_LIST_OFFSET_X;
         int m = y + RECIPE_LIST_OFFSET_Y;
 
         mouseScrolled(0d, 0d, 0d, 0d);
-        matrices.drawGuiTexture(SCROLLER_TEXTURE, x+119, y+RECIPE_LIST_OFFSET_Y+(int)(41f*this.scrollAmount), 0, SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
+        matrices.drawGuiTexture(RenderLayer::getGuiTextured, SCROLLER_TEXTURE, x+119, y+RECIPE_LIST_OFFSET_Y+(int)(41f*this.scrollAmount), SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
 
         int selectedRecipeIndex = handler.getSelectedRecipeIndex();
-        DynamicRegistryManager registry = this.client.world.getRegistryManager();
+	    ContextParameterMap contextParameterMap = SlotDisplayContexts.createParameters(this.client.world);
         if(this.scrollOffset < 0)
             this.scrollOffset = 0;
         for(int i = this.scrollOffset; i < RECIPE_LIST_COLUMNS*RECIPE_LIST_ROWS && i < handler.getAvailableRecipeCount(); i++) {
@@ -73,12 +77,13 @@ public class AutoCutterScreen extends BaseAutoScreen<AutoCutterScreenHandler> {
             int iY = m + j/RECIPE_LIST_COLUMNS * RECIPE_ENTRY_HEIGHT + 2;
 
             matrices.drawGuiTexture(
+                RenderLayer::getGuiTextured,
                 i == selectedRecipeIndex? RECIPE_SELECTED_TEXTURE:
                 mouseX >= iX && mouseY >= iY && mouseX < iX + RECIPE_ENTRY_WIDTH && mouseY < iY + RECIPE_ENTRY_HEIGHT? RECIPE_HIGHLIGHTED_TEXTURE:
                 RECIPE_TEXTURE,
                 iX, iY-1, RECIPE_ENTRY_WIDTH, RECIPE_ENTRY_HEIGHT
             );
-            matrices.drawItem(handler.getAvailableRecipes().get(i).value().getResult(registry), iX, iY);
+            matrices.drawItem(handler.getAvailableRecipes().entries().get(i).recipe().optionDisplay().getFirst(contextParameterMap), iX, iY);
         }
     }
 
@@ -109,6 +114,8 @@ public class AutoCutterScreen extends BaseAutoScreen<AutoCutterScreenHandler> {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        assert this.client != null;
+        assert this.client.interactionManager != null;
         int x = this.x + RECIPE_LIST_OFFSET_X;
         int y = this.y + RECIPE_LIST_OFFSET_Y;
 
@@ -118,7 +125,7 @@ public class AutoCutterScreen extends BaseAutoScreen<AutoCutterScreenHandler> {
             double recipeMouseY = mouseY - (double)(y + visibleRecipeIndex / RECIPE_LIST_COLUMNS * RECIPE_ENTRY_HEIGHT);
             if (recipeMouseX >= 0 && recipeMouseY >= 0 && recipeMouseX < RECIPE_ENTRY_WIDTH && recipeMouseY < RECIPE_ENTRY_HEIGHT && this.handler.onButtonClick(this.client.player, recipeIndex)) {
                MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1));
-               this.client.interactionManager.clickButton(this.handler.syncId, recipeIndex);
+	            this.client.interactionManager.clickButton(this.handler.syncId, recipeIndex);
                return true;
             }
         }

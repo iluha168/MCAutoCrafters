@@ -17,7 +17,7 @@ import net.minecraft.screen.slot.Slot;
 
 public class AutoGrindstoneScreenHandler extends BaseAutoScreenHandler {
     public static final ScreenHandlerType<AutoGrindstoneScreenHandler> SCREEN_HANDLER = new ScreenHandlerType<>(
-        (syncId, inventory) -> new AutoGrindstoneScreenHandler(syncId, inventory),
+	    AutoGrindstoneScreenHandler::new,
         FeatureFlags.VANILLA_FEATURES
     );
 

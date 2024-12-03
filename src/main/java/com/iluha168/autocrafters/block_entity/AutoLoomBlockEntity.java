@@ -5,6 +5,7 @@ import java.util.List;
 import com.iluha168.autocrafters.block.AutoLoomBlock;
 import com.iluha168.autocrafters.screen_handler.AutoLoomScreenHandler;
 
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BannerPattern;
 import net.minecraft.block.entity.BlockEntityType;
@@ -30,7 +31,7 @@ import net.minecraft.util.math.Direction;
 public class AutoLoomBlockEntity extends BaseAutoBlockEntity {
     public static final int[] ALL_SLOTS = new int[]{0,1,2};
 
-    public static final BlockEntityType<AutoLoomBlockEntity> BLOCK_ENTITY = BlockEntityType.Builder
+    public static final BlockEntityType<AutoLoomBlockEntity> BLOCK_ENTITY = FabricBlockEntityTypeBuilder
         .create(AutoLoomBlockEntity::new, AutoLoomBlock.BLOCK)
         .build();
 
@@ -49,14 +50,12 @@ public class AutoLoomBlockEntity extends BaseAutoBlockEntity {
 
         @Override
         public int get(int index) {
-            switch (index) {
-                case 0:
-                return patternIndex;
-                case 1:
-                return world.getBlockState(pos).get(Properties.TRIGGERED)? 1:0;
-                default:
-                throw new ArrayIndexOutOfBoundsException();
-            }
+            assert world != null;
+	        return switch (index) {
+		        case 0 -> patternIndex;
+		        case 1 -> world.getBlockState(pos).get(Properties.TRIGGERED) ? 1 : 0;
+		        default -> throw new ArrayIndexOutOfBoundsException();
+	        };
         }
 
         @Override
@@ -72,9 +71,12 @@ public class AutoLoomBlockEntity extends BaseAutoBlockEntity {
     };
 
     public static boolean applyPatternComponent(ItemStack bannerStack, RegistryEntry<BannerPattern> pattern, DyeColor dyeColor){
-        if(bannerStack.get(DataComponentTypes.BANNER_PATTERNS).layers().size() >= MAX_DYE_LAYERS) return false;
-        bannerStack.apply(DataComponentTypes.BANNER_PATTERNS, BannerPatternsComponent.DEFAULT, (components) ->
-            (new BannerPatternsComponent.Builder()).addAll(components).add(pattern, dyeColor).build()
+        BannerPatternsComponent component = bannerStack.get(DataComponentTypes.BANNER_PATTERNS);
+        assert component != null;
+        if(component.layers().size() >= MAX_DYE_LAYERS)
+            return false;
+        bannerStack.apply(DataComponentTypes.BANNER_PATTERNS, BannerPatternsComponent.DEFAULT, components ->
+            new BannerPatternsComponent.Builder().addAll(components).add(pattern, dyeColor).build()
         );
         return true;
     }
@@ -83,8 +85,10 @@ public class AutoLoomBlockEntity extends BaseAutoBlockEntity {
     public ItemStack craft() {
         int selectionIndex = propertyDelegate.get(0);
         if(selectionIndex == -1) return ItemStack.EMPTY;
-        if(bannerPatternLookup == null)
-            this.bannerPatternLookup = world.getRegistryManager().getWrapperOrThrow(RegistryKeys.BANNER_PATTERN);
+        if(bannerPatternLookup == null) {
+	        assert world != null;
+	        this.bannerPatternLookup = world.getRegistryManager().getOrThrow(RegistryKeys.BANNER_PATTERN);
+        }
         List<RegistryEntry<BannerPattern>> bannerPatters = AutoLoomScreenHandler.getPatternsFor(bannerPatternLookup, getStack(2));
         if(selectionIndex >= 0 && selectionIndex < bannerPatters.size()) {
             ItemStack bannerStack = getStack(0);
@@ -135,14 +139,11 @@ public class AutoLoomBlockEntity extends BaseAutoBlockEntity {
 
     @Override
     public boolean canInsert(int slot, ItemStack stack, Direction dir) {
-        switch (slot) {
-            case 0:
-            return stack.getItem() instanceof BannerItem;
-            case 1:
-            return stack.getItem() instanceof DyeItem;
-            default:
-            return false;
-        }
+	    return switch (slot) {
+		    case 0 -> stack.getItem() instanceof BannerItem;
+		    case 1 -> stack.getItem() instanceof DyeItem;
+		    default -> false;
+	    };
     }
 
     @Override

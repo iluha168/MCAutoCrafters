@@ -1,6 +1,7 @@
 package com.iluha168.autocrafters.block_entity;
 
 import com.iluha168.autocrafters.block.AutoFletchingTableBlock;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -13,8 +14,8 @@ import net.minecraft.util.math.Direction;
 
 public class AutoFletchingTableBlockEntity extends BaseAutoBlockEntity {
     public static final int[] ALL_SLOTS = new int[]{};
-    public static final BlockEntityType<AutoFletchingTableBlockEntity> BLOCK_ENTITY = BlockEntityType.Builder
-        .create(AutoFletchingTableBlockEntity::new,  AutoFletchingTableBlock.BLOCK)
+    public static final BlockEntityType<AutoFletchingTableBlockEntity> BLOCK_ENTITY = FabricBlockEntityTypeBuilder
+        .create(AutoFletchingTableBlockEntity::new, AutoFletchingTableBlock.BLOCK)
         .build();
 
     public AutoFletchingTableBlockEntity(BlockPos pos, BlockState state) {

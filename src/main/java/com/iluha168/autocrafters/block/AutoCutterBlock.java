@@ -1,18 +1,20 @@
 package com.iluha168.autocrafters.block;
 
 import com.iluha168.autocrafters.block_entity.AutoCutterBlockEntity;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
+
+import static com.iluha168.autocrafters.ServerMod.modId;
 
 public class AutoCutterBlock extends BaseAutoBlock {
     protected static final VoxelShape SHAPE_UP    = Block.createCuboidShape(0, 0, 0, 16, 9, 16);
@@ -21,15 +23,19 @@ public class AutoCutterBlock extends BaseAutoBlock {
     protected static final VoxelShape SHAPE_NORTH = Block.createCuboidShape(0, 0, 0, 16, 16, 9);
     protected static final VoxelShape SHAPE_SOUTH = Block.createCuboidShape(0, 0, 16-9, 16, 16, 16);
 
-    public static final Block BLOCK = new AutoCutterBlock(
+    public static final Identifier ID = Identifier.of(modId, "autocutter");
+
+    public static final Block BLOCK = Blocks.register(
+        RegistryKey.of(RegistryKeys.BLOCK, ID),
+        AutoCutterBlock::new,
         AbstractBlock.Settings.create()
-        .strength(1.5f, 3.5f)
-        .sounds(BlockSoundGroup.STONE)
-        .requiresTool()
-        .nonOpaque()
+            .strength(1.5f, 3.5f)
+            .sounds(BlockSoundGroup.STONE)
+            .requiresTool()
+            .nonOpaque()
     );
 
-    public static final BlockItem BLOCK_ITEM = new BlockItem(BLOCK, new Item.Settings());
+    public static final Item ITEM = Items.register(BLOCK);
 
     public AutoCutterBlock(Settings settings){
         super(settings);
@@ -42,27 +48,13 @@ public class AutoCutterBlock extends BaseAutoBlock {
 
     @Override
     protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        switch(state.get(Properties.ORIENTATION)){
-            case EAST_UP:
-            case NORTH_UP:
-            case SOUTH_UP:
-            case WEST_UP:
-                return SHAPE_UP;
-            case UP_EAST:
-            case DOWN_EAST:
-                return SHAPE_WEST;
-            case UP_NORTH:
-            case DOWN_NORTH:
-                return SHAPE_SOUTH;
-            case UP_SOUTH:
-            case DOWN_SOUTH:
-                return SHAPE_NORTH;
-            case UP_WEST:
-            case DOWN_WEST:
-                return SHAPE_EAST;
-            default:
-                return null;
-        }
+	    return switch (state.get(Properties.ORIENTATION)) {
+		    case EAST_UP, NORTH_UP, SOUTH_UP, WEST_UP -> SHAPE_UP;
+		    case UP_EAST, DOWN_EAST -> SHAPE_WEST;
+		    case UP_NORTH, DOWN_NORTH -> SHAPE_SOUTH;
+		    case UP_SOUTH, DOWN_SOUTH -> SHAPE_NORTH;
+		    case UP_WEST, DOWN_WEST -> SHAPE_EAST;
+	    };
     }
 
     @Override

@@ -1,18 +1,16 @@
 package com.iluha168.autocrafters.block_entity;
 
-import java.util.List;
-
 import com.iluha168.autocrafters.block.AutoCutterBlock;
 import com.iluha168.autocrafters.screen_handler.AutoCutterScreenHandler;
 
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.RecipeEntry;
-import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.StonecuttingRecipe;
+import net.minecraft.recipe.display.CuttingRecipeDisplay;
 import net.minecraft.recipe.input.SingleStackRecipeInput;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
@@ -22,7 +20,7 @@ import net.minecraft.world.World;
 
 public class AutoCutterBlockEntity extends BaseAutoBlockEntity {
     public static final int[] ALL_SLOTS = new int[]{0};
-    public static final BlockEntityType<AutoCutterBlockEntity> BLOCK_ENTITY = BlockEntityType.Builder
+    public static final BlockEntityType<AutoCutterBlockEntity> BLOCK_ENTITY = FabricBlockEntityTypeBuilder
         .create(AutoCutterBlockEntity::new, AutoCutterBlock.BLOCK)
         .build();
 
@@ -37,7 +35,8 @@ public class AutoCutterBlockEntity extends BaseAutoBlockEntity {
 
 	@Override
 	public boolean canInsert(int slot, ItemStack stack, Direction dir) {
-        return world.getRecipeManager().getFirstMatch(RecipeType.STONECUTTING, new SingleStackRecipeInput(stack), world).isPresent();
+		assert world != null;
+		return !getAvailableRecipes(new SingleStackRecipeInput(stack), world).isEmpty();
 	}
 
 	@Override
@@ -55,13 +54,13 @@ public class AutoCutterBlockEntity extends BaseAutoBlockEntity {
 
         @Override
         public int get(int index) {
-			if(index != 0) throw new ArrayIndexOutOfBoundsException();
+			assert index == 0;
             return recipeIndex;
         }
 
         @Override
         public void set(int index, int value) {
-            if(index != 0) throw new ArrayIndexOutOfBoundsException();
+	        assert index == 0;
             recipeIndex = value;
         }
 
@@ -76,20 +75,25 @@ public class AutoCutterBlockEntity extends BaseAutoBlockEntity {
         return new AutoCutterScreenHandler(syncId, playerInventory, this, propertyDelegate);
 	}
 
-	public static List<RecipeEntry<StonecuttingRecipe>> getAvailableRecipes(SingleStackRecipeInput input, World world){
-		return world.getRecipeManager().getAllMatches(RecipeType.STONECUTTING, input, world);
+	public static CuttingRecipeDisplay.Grouping<StonecuttingRecipe> getAvailableRecipes(SingleStackRecipeInput input, World world){
+		return world.getRecipeManager().getStonecutterRecipes().filter(input.item());
 	}
 
-	public static ItemStack craftStatic(SingleStackRecipeInput input, World world, List<RecipeEntry<StonecuttingRecipe>> availableRecipes, int recipeIndex){
-        return (recipeIndex >= 0 && recipeIndex < availableRecipes.size())?
-            availableRecipes.get(recipeIndex).value().craft(input, world.getRegistryManager())
-            : ItemStack.EMPTY;
+	public static ItemStack craftStatic(SingleStackRecipeInput input, World world, CuttingRecipeDisplay.Grouping<StonecuttingRecipe> availableRecipes, int recipeIndex){
+		var recipes = availableRecipes.entries();
+		if(recipeIndex <= 0 || recipeIndex > recipes.size())
+			return ItemStack.EMPTY;
+		var recipe = recipes.get(recipeIndex).recipe().recipe();
+		if(recipe.isEmpty())
+			return ItemStack.EMPTY;
+		return recipe.get().value().craft(input, world.getRegistryManager());
 	}
 
 	@Override
 	public ItemStack craft() {
+		assert world != null;
 		SingleStackRecipeInput recipeInput = new SingleStackRecipeInput(getStack(0));
-        ItemStack result = craftStatic(recipeInput, world, getAvailableRecipes(recipeInput, world),  propertyDelegate.get(0));
+		ItemStack result = craftStatic(recipeInput, world, getAvailableRecipes(recipeInput, world), propertyDelegate.get(0));
 		if(!result.isEmpty())
 			getStack(0).decrement(1);
 		return result;

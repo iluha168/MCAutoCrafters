@@ -1,23 +1,16 @@
 {
     "type": "minecraft:crafting_shaped",
+    "category": "redstone",
     "pattern": [
         "iii",
         "iGi",
         "RDR"
     ],
     "key": {
-        "i": {
-            "item": "minecraft:iron_ingot"
-        },
-        "G": {
-            "item": "minecraft:grindstone"
-        },
-        "R": {
-            "item": "minecraft:redstone"
-        },
-        "D": {
-            "item": "minecraft:dropper"
-        }
+        "i": "#c:ingots/iron",
+        "G": "minecraft:grindstone",
+        "R": "#c:dusts/redstone",
+        "D": "minecraft:dropper"
     },
     "result": {
         "id": "autocrafters:autogrindstone",

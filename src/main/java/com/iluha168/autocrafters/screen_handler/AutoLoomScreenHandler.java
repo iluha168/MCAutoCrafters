@@ -30,7 +30,7 @@ import net.minecraft.screen.slot.Slot;
 
 public class AutoLoomScreenHandler extends BaseAutoScreenHandler {
     public static final ScreenHandlerType<AutoLoomScreenHandler> SCREEN_HANDLER = new ScreenHandlerType<>(
-        (syncId, inventory) -> new AutoLoomScreenHandler(syncId, inventory),
+	    AutoLoomScreenHandler::new,
         FeatureFlags.VANILLA_FEATURES
     );
 
@@ -76,7 +76,7 @@ public class AutoLoomScreenHandler extends BaseAutoScreenHandler {
             }
         });
         this.outputSlot = this.addSlot(new CrafterOutputSlot(invOutput, 0, 143, 33));
-        this.bannerPatternLookup = playerInventory.player.getRegistryManager().getWrapperOrThrow(RegistryKeys.BANNER_PATTERN);
+        this.bannerPatternLookup = playerInventory.player.getRegistryManager().getOrThrow(RegistryKeys.BANNER_PATTERN);
 
         for(int i = 0; i < 3; ++i)
             for(int j = 0; j < 9; ++j)

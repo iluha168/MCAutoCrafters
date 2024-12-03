@@ -1,23 +1,16 @@
 {
     "type": "minecraft:crafting_shaped",
+    "category": "redstone",
     "pattern": [
         "iii",
         "iSi",
         "RDR"
     ],
     "key": {
-        "i": {
-            "item": "minecraft:iron_ingot"
-        },
-        "S": {
-            "item": "minecraft:stonecutter"
-        },
-        "R": {
-            "item": "minecraft:redstone"
-        },
-        "D": {
-            "item": "minecraft:dropper"
-        }
+        "i": "#c:ingots/iron",
+        "S": "minecraft:stonecutter",
+        "R": "#c:dusts/redstone",
+        "D": "minecraft:dropper"
     },
     "result": {
         "id": "autocrafters:autocutter",

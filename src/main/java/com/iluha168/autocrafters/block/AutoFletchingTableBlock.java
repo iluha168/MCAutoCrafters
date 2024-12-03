@@ -4,21 +4,27 @@ import com.iluha168.autocrafters.block_entity.AutoFletchingTableBlockEntity;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
-public class AutoFletchingTableBlock extends BaseAutoBlock {
-    public static final Block BLOCK = new AutoFletchingTableBlock(
-        AbstractBlock.Settings.create()
-        .strength(1.5f, 3.5f)
-        .sounds(BlockSoundGroup.WOOD)
-        .requiresTool()
-    );
+import static com.iluha168.autocrafters.ServerMod.modId;
 
-    public static final BlockItem BLOCK_ITEM = new BlockItem(BLOCK, new Item.Settings());
+public class AutoFletchingTableBlock extends BaseAutoBlock {
+    public static final Identifier ID = Identifier.of(modId, "autofletching");
+
+    public static final Block BLOCK = Blocks.register(
+        RegistryKey.of(RegistryKeys.BLOCK, ID),
+        AutoFletchingTableBlock::new,
+        AbstractBlock.Settings.create()
+            .strength(1.5f, 3.5f)
+            .sounds(BlockSoundGroup.WOOD)
+            .requiresTool()
+    );
 
     public AutoFletchingTableBlock(Settings settings){
         super(settings);
