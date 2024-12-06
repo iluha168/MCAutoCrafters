@@ -2,7 +2,6 @@ package com.iluha168.autocrafters.block;
 
 import com.iluha168.autocrafters.block_entity.AutoLoomBlockEntity;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -23,10 +22,7 @@ public class AutoLoomBlock extends BaseAutoBlock {
     public static final Block BLOCK = Blocks.register(
         RegistryKey.of(RegistryKeys.BLOCK, ID),
         AutoLoomBlock::new,
-        AbstractBlock.Settings.create()
-            .strength(1.5f, 3.5f)
-            .sounds(BlockSoundGroup.WOOD)
-            .requiresTool()
+        Blocks.CRAFTER.getSettings().sounds(BlockSoundGroup.WOOD)
     );
 
     public static final Item ITEM = Items.register(BLOCK);

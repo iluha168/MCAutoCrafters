@@ -1,7 +1,6 @@
 package com.iluha168.autocrafters.block;
 
 import com.iluha168.autocrafters.block_entity.AutoFletchingTableBlockEntity;
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -20,10 +19,7 @@ public class AutoFletchingTableBlock extends BaseAutoBlock {
     public static final Block BLOCK = Blocks.register(
         RegistryKey.of(RegistryKeys.BLOCK, ID),
         AutoFletchingTableBlock::new,
-        AbstractBlock.Settings.create()
-            .strength(1.5f, 3.5f)
-            .sounds(BlockSoundGroup.WOOD)
-            .requiresTool()
+        Blocks.CRAFTER.getSettings().sounds(BlockSoundGroup.WOOD)
     );
 
     public AutoFletchingTableBlock(Settings settings){

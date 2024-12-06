@@ -20,7 +20,19 @@ repositories {
 
 loom {
 	splitEnvironmentSourceSets()
+}
 
+sourceSets {
+	test {
+		compileClasspath += main.compileClasspath
+		runtimeClasspath += main.runtimeClasspath
+
+		compileClasspath += client.compileClasspath
+		runtimeClasspath += client.runtimeClasspath
+	}
+}
+
+loom {
 	mods {
 		"autocrafters" {
 			sourceSet sourceSets.main
@@ -28,6 +40,29 @@ loom {
 		}
 	}
 
+	runs {
+		create("testServer") {
+			server()
+
+			name "Test Minecraft Server"
+			vmArg "-Dfabric-api.gametest"
+			runDir "run/saves"
+			source sourceSets.test
+		}
+
+		create("testClient") {
+			client()
+
+			name "Test Minecraft Client"
+			programArgs "--quickPlaySingleplayer", "world"
+			programArgs "--username", "DEV"
+			source sourceSets.test
+		}
+	}
+}
+
+runTestClient {
+	dependsOn.add(runTestServer)
 }
 
 dependencies {
@@ -48,8 +83,24 @@ processResources {
 	}
 }
 
+processTestResources {
+	dependsOn.add(processResources)
+	from("build/resources/test") {
+		duplicatesStrategy = DuplicatesStrategy.INCLUDE
+		into "../main"
+	}
+	from("build/resources/main") {
+		duplicatesStrategy = DuplicatesStrategy.INCLUDE
+		into "../test"
+	}
+}
+
 tasks.withType(JavaCompile).configureEach {
 	it.options.release = 21
+}
+
+test {
+	dependsOn.add(runTestServer)
 }
 
 java {

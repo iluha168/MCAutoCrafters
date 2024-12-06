@@ -32,9 +32,9 @@ import net.minecraft.util.math.MathHelper;
 public class AutoLoomScreen extends BaseAutoScreen<AutoLoomScreenHandler> {
     private static final Identifier TEXTURE = Identifier.of(ServerMod.modId, "textures/gui/container/autoloom.png");
     private static final Identifier[] SLOT_TEXTURES = {
-        Identifier.ofVanilla("container/loom/banner_slot"),
-        Identifier.ofVanilla("container/loom/dye_slot"),
-        Identifier.ofVanilla("container/loom/pattern_slot")
+        Identifier.ofVanilla("container/slot/banner"),
+        Identifier.ofVanilla("container/slot/dye"),
+        Identifier.ofVanilla("container/slot/banner_pattern")
     };
     private static final Identifier SCROLLER_TEXTURE = Identifier.ofVanilla("container/loom/scroller");
     private static final Identifier PATTERN_SELECTED_TEXTURE = Identifier.ofVanilla("container/loom/pattern_selected");
@@ -60,7 +60,7 @@ public class AutoLoomScreen extends BaseAutoScreen<AutoLoomScreenHandler> {
         assert this.client != null;
         super.init();
         this.titleY -= 2;
-	    this.bannerField = this.client.getEntityModelLoader().getModelPart(EntityModelLayers.BANNER).getChild("flag");
+	    this.bannerField = this.client.getLoadedEntityModels().getModelPart(EntityModelLayers.STANDING_BANNER_FLAG).getChild("flag");
         this.bannerField.pitch = 0.0F;
         this.bannerField.pivotY = -32.0F;
     }

@@ -1,4 +1,4 @@
-{
+ {
   "variants": {
     "crafting=false,orientation=down_east,triggered=false": {
       "model": "autocrafters:block/autocutter",

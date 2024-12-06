@@ -7,7 +7,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
-import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -28,11 +27,7 @@ public class AutoCutterBlock extends BaseAutoBlock {
     public static final Block BLOCK = Blocks.register(
         RegistryKey.of(RegistryKeys.BLOCK, ID),
         AutoCutterBlock::new,
-        AbstractBlock.Settings.create()
-            .strength(1.5f, 3.5f)
-            .sounds(BlockSoundGroup.STONE)
-            .requiresTool()
-            .nonOpaque()
+        Blocks.CRAFTER.getSettings().nonOpaque()
     );
 
     public static final Item ITEM = Items.register(BLOCK);
