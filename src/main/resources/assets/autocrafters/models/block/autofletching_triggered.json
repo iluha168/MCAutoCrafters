@@ -1,0 +1,9 @@
+{
+  "parent": "autocrafters:block/autofletching",
+  "textures": {
+    "top": "autocrafters:block/autofletching_top_triggered",
+    "south": "autocrafters:block/autofletching_south_triggered",
+    "west": "autocrafters:block/autofletching_west_triggered",
+    "east": "autocrafters:block/autofletching_east_triggered"
+  }
+}

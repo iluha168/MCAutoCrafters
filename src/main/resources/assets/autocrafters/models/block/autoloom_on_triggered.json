@@ -1,6 +1,0 @@
-{
-  "parent": "autocrafters:block/autoloom_on",
-  "textures": {
-    "front": "autocrafters:block/autoloom_front_on_triggered"
-  }
-}
