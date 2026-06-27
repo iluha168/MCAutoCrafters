@@ -6,6 +6,7 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.MapColor;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundEvent;
@@ -22,9 +23,9 @@ public class AutoFletchingTableBlock extends BaseAutoBlock {
         ID.toString(),
         new AutoFletchingTableBlock(
             AbstractBlock.Settings.create()
+            .mapColor(MapColor.STONE_GRAY)
             .strength(1.5f, 3.5f)
             .sounds(BlockSoundGroup.WOOD)
-            .requiresTool()
         )
     );
 

@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.MapColor;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -33,9 +34,9 @@ public class AutoCutterBlock extends BaseAutoBlock {
         ID.toString(),
         new AutoCutterBlock(
             AbstractBlock.Settings.create()
+            .mapColor(MapColor.STONE_GRAY)
             .strength(1.5f, 3.5f)
             .sounds(BlockSoundGroup.STONE)
-            .requiresTool()
             .nonOpaque()
         )
     );
