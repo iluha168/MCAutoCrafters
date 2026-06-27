@@ -38,7 +38,8 @@ public class AutoCutterBlockEntity extends BaseAutoBlockEntity {
 
 	@Override
 	public boolean canInsert(int slot, ItemStack stack, Direction dir) {
-        return world.getRecipeManager().getFirstMatch(RecipeType.STONECUTTING, new SimpleInventory(stack), world).isPresent();
+		assert world != null;
+		return !getAvailableRecipes(new SimpleInventory(stack), world).isEmpty();
 	}
 
 	@Override
@@ -56,13 +57,13 @@ public class AutoCutterBlockEntity extends BaseAutoBlockEntity {
 
         @Override
         public int get(int index) {
-			if(index != 0) throw new ArrayIndexOutOfBoundsException();
+			assert index == 0;
             return recipeIndex;
         }
 
         @Override
         public void set(int index, int value) {
-            if(index != 0) throw new ArrayIndexOutOfBoundsException();
+			assert index == 0;
             recipeIndex = value;
         }
 
@@ -89,8 +90,9 @@ public class AutoCutterBlockEntity extends BaseAutoBlockEntity {
 
 	@Override
 	public ItemStack craft() {
+		assert world != null;
 		Inventory recipeInput = new SimpleInventory(getStack(0));
-        ItemStack result = craftStatic(recipeInput, world, getAvailableRecipes(recipeInput, world),  propertyDelegate.get(0));
+		ItemStack result = craftStatic(recipeInput, world, getAvailableRecipes(recipeInput, world), propertyDelegate.get(0));
 		if(!result.isEmpty())
 			getStack(0).decrement(1);
 		return result;

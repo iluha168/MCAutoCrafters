@@ -54,6 +54,7 @@ public class AutoLoomScreen extends BaseAutoScreen<AutoLoomScreenHandler> {
 
     @Override
     protected void init() {
+        assert this.client != null;
         super.init();
         this.titleY -= 2;
         this.bannerField = this.client.getEntityModelLoader().getModelPart(EntityModelLayers.BANNER).getChild("flag");
@@ -74,7 +75,7 @@ public class AutoLoomScreen extends BaseAutoScreen<AutoLoomScreenHandler> {
         super.drawBackground(matrices, delta, mouseX, mouseY);
         int l = x + PATTERN_LIST_OFFSET_X;
         int m = y + PATTERN_LIST_OFFSET_Y;
-        List<RegistryEntry<BannerPattern>> list = getPatterns();
+        List<RegistryEntry<BannerPattern>> patterns = getPatterns();
 
         for(int i = 0; i <= 2; i++){
             Slot slot = handler.getSlot(i);
@@ -90,16 +91,16 @@ public class AutoLoomScreen extends BaseAutoScreen<AutoLoomScreenHandler> {
         int selectedPatternIndex = handler.getSelectedPatternIndex();
         DiffuseLighting.disableGuiDepthLighting();
         loopBannerPatterns:
-        for(int n = 0; n < 4; n++) {
-            for(int o = 0; o < 4; o++) {
-                int p = n + this.visibleTopRow;
-                int q = p * 4 + o;
-                if (q >= list.size())
+        for(int row = 0; row < 4; row++) {
+            for(int col = 0; col < 4; col++) {
+                int rowI = row + this.visibleTopRow;
+                int i = rowI * 4 + col;
+                if (i >= patterns.size())
                     break loopBannerPatterns;
-                int px = l + o * PATTERN_ENTRY_SIZE;
-                int py = m + n * PATTERN_ENTRY_SIZE;
+                int px = l + col * PATTERN_ENTRY_SIZE;
+                int py = m + row * PATTERN_ENTRY_SIZE;
                 int t;
-                if (q == selectedPatternIndex) {
+                if (i == selectedPatternIndex) {
                     t = this.backgroundHeight + PATTERN_ENTRY_SIZE;
                 } else if (mouseX >= px && mouseY >= py && mouseX < px + PATTERN_ENTRY_SIZE && mouseY < py + PATTERN_ENTRY_SIZE) {
                     t = this.backgroundHeight + 28;
@@ -108,7 +109,7 @@ public class AutoLoomScreen extends BaseAutoScreen<AutoLoomScreenHandler> {
                 }
 
                 matrices.drawTexture(TEXTURE_VANILLA, px, py, 0, t, PATTERN_ENTRY_SIZE, PATTERN_ENTRY_SIZE);
-                this.drawBanner(matrices, list.get(q), px, py);
+                this.drawBanner(matrices, patterns.get(i), px, py);
             }
         }
         DiffuseLighting.enableGuiDepthLighting();
@@ -141,6 +142,8 @@ public class AutoLoomScreen extends BaseAutoScreen<AutoLoomScreenHandler> {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        assert this.client != null;
+        assert this.client.interactionManager != null;
         this.scrollbarClicked = false;
         int i = this.x + PATTERN_LIST_OFFSET_X;
         int j = this.y + PATTERN_LIST_OFFSET_Y;

@@ -53,6 +53,8 @@ public class AutoCutterScreen extends BaseAutoScreen<AutoCutterScreenHandler> {
 
     @Override
     protected void drawBackground(DrawContext matrices, float delta, int mouseX, int mouseY) {
+        assert this.client != null;
+        assert this.client.world != null;
         super.drawBackground(matrices, delta, mouseX, mouseY);
         int l = x + RECIPE_LIST_OFFSET_X;
         int m = y + RECIPE_LIST_OFFSET_Y;
@@ -105,6 +107,8 @@ public class AutoCutterScreen extends BaseAutoScreen<AutoCutterScreenHandler> {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        assert this.client != null;
+        assert this.client.interactionManager != null;
         int x = this.x + RECIPE_LIST_OFFSET_X;
         int y = this.y + RECIPE_LIST_OFFSET_Y;
 

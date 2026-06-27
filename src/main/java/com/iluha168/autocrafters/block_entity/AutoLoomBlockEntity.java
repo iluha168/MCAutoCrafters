@@ -46,14 +46,12 @@ public class AutoLoomBlockEntity extends BaseAutoBlockEntity {
 
         @Override
         public int get(int index) {
-            switch (index) {
-                case 0:
-                return patternIndex;
-                case 1:
-                return world.getBlockState(pos).get(Properties.TRIGGERED)? 1:0;
-                default:
-                throw new ArrayIndexOutOfBoundsException();
-            }
+            assert world != null;
+            return switch (index) {
+                case 0 -> patternIndex;
+                case 1 -> world.getBlockState(pos).get(Properties.TRIGGERED) ? 1 : 0;
+                default -> throw new ArrayIndexOutOfBoundsException();
+            };
         }
 
         @Override
@@ -141,14 +139,11 @@ public class AutoLoomBlockEntity extends BaseAutoBlockEntity {
 
     @Override
     public boolean canInsert(int slot, ItemStack stack, Direction dir) {
-        switch (slot) {
-            case 0:
-            return stack.getItem() instanceof BannerItem;
-            case 1:
-            return stack.getItem() instanceof DyeItem;
-            default:
-            return false;
-        }
+        return switch (slot) {
+            case 0 -> stack.getItem() instanceof BannerItem;
+            case 1 -> stack.getItem() instanceof DyeItem;
+            default -> false;
+        };
     }
 
     @Override

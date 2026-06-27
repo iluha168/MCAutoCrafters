@@ -10,7 +10,12 @@ import net.minecraft.util.Identifier;
 public abstract class BaseAutoScreen<T extends ScreenHandler> extends HandledScreen<T> {
     private final Identifier backgroundTextureId;
 
-    public BaseAutoScreen(T handler, PlayerInventory inventory, Text title, Identifier backgroundTextureId) {
+    public BaseAutoScreen(
+        T handler,
+        PlayerInventory inventory,
+        Text title,
+        Identifier backgroundTextureId
+    ) {
         super(handler, inventory, title);
         this.backgroundTextureId = backgroundTextureId;
     }

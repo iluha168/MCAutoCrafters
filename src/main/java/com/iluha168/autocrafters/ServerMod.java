@@ -7,48 +7,29 @@ import com.iluha168.autocrafters.screen_handler.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.item.ItemGroups;
-import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
 
 public class ServerMod implements ModInitializer {
 	public static final String modId = "autocrafters";
 
 	@Override
 	public void onInitialize() {
-		Identifier loomID = new Identifier(modId, "autoloom");
-		Registry.register(Registries.BLOCK, loomID, AutoLoomBlock.BLOCK     );
-		Registry.register(Registries.ITEM , loomID, AutoLoomBlock.BLOCK_ITEM);
-		Registry.register(Registries.BLOCK_ENTITY_TYPE, loomID, AutoLoomBlockEntity.BLOCK_ENTITY);
-        Registry.register(Registries.SCREEN_HANDLER, loomID, AutoLoomScreenHandler.SCREEN_HANDLER);
+		Registry.register(Registries.BLOCK_ENTITY_TYPE, AutoLoomBlock.ID, AutoLoomBlockEntity.BLOCK_ENTITY);
+		Registry.register(Registries.SCREEN_HANDLER, AutoLoomBlock.ID, AutoLoomScreenHandler.SCREEN_HANDLER);
 
-		Identifier grindstoneID = new Identifier(modId, "autogrindstone");
-		Registry.register(Registries.BLOCK, grindstoneID, AutoGrindstoneBlock.BLOCK     );
-		Registry.register(Registries.ITEM , grindstoneID, AutoGrindstoneBlock.BLOCK_ITEM);
-		Registry.register(Registries.BLOCK_ENTITY_TYPE, grindstoneID, AutoGrindstoneBlockEntity.BLOCK_ENTITY);
-        Registry.register(Registries.SCREEN_HANDLER, grindstoneID, AutoGrindstoneScreenHandler.SCREEN_HANDLER);
+		Registry.register(Registries.BLOCK_ENTITY_TYPE, AutoGrindstoneBlock.ID, AutoGrindstoneBlockEntity.BLOCK_ENTITY);
+		Registry.register(Registries.SCREEN_HANDLER, AutoGrindstoneBlock.ID, AutoGrindstoneScreenHandler.SCREEN_HANDLER);
 
-		ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(content -> {
-			content.addAfter(AutoLoomBlock.BLOCK_ITEM, AutoGrindstoneBlock.BLOCK_ITEM);
-		});
+		Registry.register(Registries.BLOCK_ENTITY_TYPE, AutoCutterBlock.ID, AutoCutterBlockEntity.BLOCK_ENTITY);
+		Registry.register(Registries.SCREEN_HANDLER, AutoCutterBlock.ID, AutoCutterScreenHandler.SCREEN_HANDLER);
 
-		Identifier cutterID = new Identifier(modId, "autocutter");
-		Registry.register(Registries.BLOCK, cutterID, AutoCutterBlock.BLOCK     );
-		Registry.register(Registries.ITEM , cutterID, AutoCutterBlock.BLOCK_ITEM);
-		Registry.register(Registries.BLOCK_ENTITY_TYPE, cutterID, AutoCutterBlockEntity.BLOCK_ENTITY);
-        Registry.register(Registries.SCREEN_HANDLER, cutterID, AutoCutterScreenHandler.SCREEN_HANDLER);
-
-		// The fletching table is an easter egg: registered, but not added to any creative tab.
-		Identifier fletchingID = new Identifier(modId, "autofletching");
-		Registry.register(Registries.BLOCK, fletchingID, AutoFletchingTableBlock.BLOCK     );
-		Registry.register(Registries.ITEM , fletchingID, AutoFletchingTableBlock.BLOCK_ITEM);
-		Registry.register(Registries.BLOCK_ENTITY_TYPE, fletchingID, AutoFletchingTableBlockEntity.BLOCK_ENTITY);
+		Registry.register(Registries.BLOCK_ENTITY_TYPE, AutoFletchingTableBlock.ID, AutoFletchingTableBlockEntity.BLOCK_ENTITY);
 
 		ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(content -> {
-			content.add(AutoLoomBlock.BLOCK_ITEM);
-			content.add(AutoGrindstoneBlock.BLOCK_ITEM);
-			content.add(AutoCutterBlock.BLOCK_ITEM);
+			content.add(AutoLoomBlock.ITEM);
+			content.add(AutoGrindstoneBlock.ITEM);
+			content.add(AutoCutterBlock.ITEM);
 		});
 	}
 }

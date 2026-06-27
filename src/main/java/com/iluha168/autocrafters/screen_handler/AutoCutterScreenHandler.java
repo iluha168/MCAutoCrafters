@@ -22,7 +22,7 @@ import net.minecraft.world.World;
 
 public class AutoCutterScreenHandler extends BaseAutoScreenHandler {
     public static final ScreenHandlerType<AutoCutterScreenHandler> SCREEN_HANDLER = new ScreenHandlerType<>(
-        (syncId, inventory) -> new AutoCutterScreenHandler(syncId, inventory),
+        AutoCutterScreenHandler::new,
         FeatureFlags.VANILLA_FEATURES
     );
 

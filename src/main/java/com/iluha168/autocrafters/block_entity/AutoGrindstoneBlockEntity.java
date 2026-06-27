@@ -41,7 +41,8 @@ public class AutoGrindstoneBlockEntity extends BaseAutoBlockEntity {
 	private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
         @Override
         public int get(int index) {
-			if(index != 0) throw new ArrayIndexOutOfBoundsException();
+			assert world != null;
+			assert index == 0;
             return world.getBlockState(pos).get(Properties.TRIGGERED)? 1:0;
         }
 
@@ -78,6 +79,7 @@ public class AutoGrindstoneBlockEntity extends BaseAutoBlockEntity {
 	}
 
     public GrindstoneScreenHandler constructVirtualGSH(){
+		assert world != null;
         PlayerEntity virtualPlayer = new PlayerEntity(
             world, pos, 0,
             new GameProfile(new UUID(0,0), "")
@@ -92,7 +94,7 @@ public class AutoGrindstoneBlockEntity extends BaseAutoBlockEntity {
             ScreenHandlerContext.create(world, pos.offset(getCachedState().get(Properties.ORIENTATION).getFacing()))
         );
         for(int slot : ALL_SLOTS)
-            gsh.getSlot(slot).setStack(getStack(slot));
+            gsh.getSlot(slot).setStack(this.getStack(slot));
         return gsh;
     }
 

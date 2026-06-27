@@ -28,7 +28,7 @@ import net.minecraft.screen.slot.Slot;
 
 public class AutoLoomScreenHandler extends BaseAutoScreenHandler {
     public static final ScreenHandlerType<AutoLoomScreenHandler> SCREEN_HANDLER = new ScreenHandlerType<>(
-        (syncId, inventory) -> new AutoLoomScreenHandler(syncId, inventory),
+        AutoLoomScreenHandler::new,
         FeatureFlags.VANILLA_FEATURES
     );
 
