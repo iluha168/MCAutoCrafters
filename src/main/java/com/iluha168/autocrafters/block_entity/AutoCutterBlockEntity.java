@@ -9,9 +9,12 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.StonecuttingRecipe;
 import net.minecraft.recipe.display.CuttingRecipeDisplay;
+import net.minecraft.recipe.display.SlotDisplay;
 import net.minecraft.recipe.input.SingleStackRecipeInput;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.math.BlockPos;
@@ -79,23 +82,32 @@ public class AutoCutterBlockEntity extends BaseAutoBlockEntity {
 		return world.getRecipeManager().getStonecutterRecipes().filter(input.item());
 	}
 
-	public static ItemStack craftStatic(SingleStackRecipeInput input, World world, CuttingRecipeDisplay.Grouping<StonecuttingRecipe> availableRecipes, int recipeIndex){
+	public static ItemStack craftStatic(CuttingRecipeDisplay.Grouping<StonecuttingRecipe> availableRecipes, int recipeIndex){
 		var recipes = availableRecipes.entries();
-		if(recipeIndex <= 0 || recipeIndex > recipes.size())
+		if(recipeIndex < 0 || recipeIndex >= recipes.size())
 			return ItemStack.EMPTY;
-		var recipe = recipes.get(recipeIndex).recipe().recipe();
-		if(recipe.isEmpty())
-			return ItemStack.EMPTY;
-		return recipe.get().value().craft(input, world.getRegistryManager());
+		return ((SlotDisplay.StackSlotDisplay) recipes.get(recipeIndex).recipe().optionDisplay()).stack().copy();
 	}
 
 	@Override
 	public ItemStack craft() {
 		assert world != null;
 		SingleStackRecipeInput recipeInput = new SingleStackRecipeInput(getStack(0));
-		ItemStack result = craftStatic(recipeInput, world, getAvailableRecipes(recipeInput, world), propertyDelegate.get(0));
+		ItemStack result = craftStatic(getAvailableRecipes(recipeInput, world), propertyDelegate.get(0));
 		if(!result.isEmpty())
 			getStack(0).decrement(1);
 		return result;
+	}
+
+	@Override
+	public void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+		super.writeNbt(nbt, registryLookup);
+		nbt.putInt("RecipeIndex", propertyDelegate.get(0));
+	}
+
+	@Override
+	public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+		propertyDelegate.set(0, nbt.getInt("RecipeIndex"));
+		super.readNbt(nbt, registryLookup);
 	}
 }

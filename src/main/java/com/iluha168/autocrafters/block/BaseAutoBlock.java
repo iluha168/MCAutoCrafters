@@ -42,7 +42,7 @@ public abstract class BaseAutoBlock extends CrafterBlock {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if(!(blockEntity instanceof BaseAutoBlockEntity)) return;
         ItemStack outputStack = ((BaseAutoBlockEntity)blockEntity).craft();
-        if(outputStack.equals(ItemStack.EMPTY)){
+        if(outputStack.isEmpty()){
             world.syncWorldEvent(WorldEvents.CRAFTER_FAILS, pos, 0);
             return;
         }

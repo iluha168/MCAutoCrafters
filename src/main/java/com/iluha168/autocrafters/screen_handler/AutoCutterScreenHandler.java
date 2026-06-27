@@ -27,7 +27,6 @@ public class AutoCutterScreenHandler extends BaseAutoScreenHandler {
 
     private final Slot inputSlot;
     private final PropertyDelegate propertyDelegate;
-    private final World world;
     private CuttingRecipeDisplay.Grouping<StonecuttingRecipe> recipesCache;
 
     //Client constructor
@@ -46,8 +45,6 @@ public class AutoCutterScreenHandler extends BaseAutoScreenHandler {
         this.propertyDelegate = propertyDelegate;
         this.addProperties(propertyDelegate);
 
-        this.world = playerInventory.player.getWorld();
-
         this.inputSlot = this.addSlot(new Slot(invInput, 0, 20, 33){
             @Override
             public boolean canInsert(ItemStack stack){
@@ -65,7 +62,7 @@ public class AutoCutterScreenHandler extends BaseAutoScreenHandler {
         addListener(new ScreenHandlerListener() {
             @Override
             public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack) {
-                onContentChanged(slotId == 0? invInput : null);
+                if (slotId < 1) onContentChanged(invInput);
             }
 
             @Override
@@ -88,16 +85,17 @@ public class AutoCutterScreenHandler extends BaseAutoScreenHandler {
 
     @Override
     public void onContentChanged(Inventory inventory) {
-        if(inventory == invInput)
-            this.updateOutputSlot();
+        this.updateOutputSlot();
         super.onContentChanged(inventory);
     }
 
     @Override
     public ItemStack getOutputPreview(){
         SingleStackRecipeInput recipeInput = new SingleStackRecipeInput(this.inputSlot.getStack());
-        this.recipesCache = AutoCutterBlockEntity.getAvailableRecipes(recipeInput, world);
-        return AutoCutterBlockEntity.craftStatic(recipeInput, world, this.recipesCache, getSelectedRecipeIndex());
+        World world = ((AutoCutterBlockEntity) this.invInput).getWorld();
+	    assert world != null;
+	    this.recipesCache = AutoCutterBlockEntity.getAvailableRecipes(recipeInput, world);
+        return AutoCutterBlockEntity.craftStatic(this.recipesCache, getSelectedRecipeIndex());
     }
 
     public int getSelectedRecipeIndex(){

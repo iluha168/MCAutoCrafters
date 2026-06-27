@@ -69,7 +69,7 @@ public class AutoGrindstoneScreenHandler extends BaseAutoScreenHandler {
         addListener(new ScreenHandlerListener() {
             @Override
             public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack) {
-                onContentChanged(null);
+                if (slotId < 2) onContentChanged(null);
             }
 
             @Override
