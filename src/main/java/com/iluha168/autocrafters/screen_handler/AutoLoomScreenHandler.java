@@ -83,7 +83,7 @@ public class AutoLoomScreenHandler extends BaseAutoScreenHandler {
         addListener(new ScreenHandlerListener() {
             @Override
             public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack) {
-                onContentChanged(null);
+                if (slotId < 3) onContentChanged(null);
             }
 
             @Override

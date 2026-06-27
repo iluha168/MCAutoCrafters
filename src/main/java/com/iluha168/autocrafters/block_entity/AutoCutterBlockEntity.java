@@ -13,6 +13,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.StonecuttingRecipe;
 import net.minecraft.screen.PropertyDelegate;
@@ -96,5 +97,17 @@ public class AutoCutterBlockEntity extends BaseAutoBlockEntity {
 		if(!result.isEmpty())
 			getStack(0).decrement(1);
 		return result;
+	}
+
+	@Override
+	public void writeNbt(NbtCompound nbt) {
+		super.writeNbt(nbt);
+		nbt.putInt("RecipeIndex", propertyDelegate.get(0));
+	}
+
+	@Override
+	public void readNbt(NbtCompound nbt) {
+		propertyDelegate.set(0, nbt.getInt("RecipeIndex"));
+		super.readNbt(nbt);
 	}
 }

@@ -78,7 +78,7 @@ public abstract class BaseAutoBlock extends BlockWithEntity {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if(!(blockEntity instanceof BaseAutoBlockEntity)) return;
         ItemStack outputStack = ((BaseAutoBlockEntity)blockEntity).craft();
-        if(outputStack.equals(ItemStack.EMPTY)){
+        if(outputStack.isEmpty()){
             return;
         } else { // "else" just for style points
             world.setBlockState(pos, state
