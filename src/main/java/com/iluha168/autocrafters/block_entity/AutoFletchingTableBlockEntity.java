@@ -8,6 +8,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -19,7 +20,7 @@ public class AutoFletchingTableBlockEntity extends BaseAutoBlockEntity {
         .build();
 
     public  AutoFletchingTableBlockEntity(BlockPos pos, BlockState state) {
-        super(BLOCK_ENTITY, pos, state, 0);
+	    super(BLOCK_ENTITY, pos, state, ALL_SLOTS.length);
     }
 
 	@Override
@@ -44,6 +45,6 @@ public class AutoFletchingTableBlockEntity extends BaseAutoBlockEntity {
 
 	@Override
 	public ItemStack craft() {
-        return ItemStack.EMPTY;
+        return Items.ARROW.getDefaultStack();
 	}
 }

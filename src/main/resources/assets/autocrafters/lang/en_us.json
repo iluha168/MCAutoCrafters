@@ -1,5 +1,6 @@
 {
   "block.autocrafters.autoloom": "Weaver",
   "block.autocrafters.autogrindstone": "Grinder",
-  "block.autocrafters.autofletching": "Fletcher"
+  "block.autocrafters.autofletching": "Fletcher",
+  "block.autocrafters.autocutter": "Stonecarver"
 }

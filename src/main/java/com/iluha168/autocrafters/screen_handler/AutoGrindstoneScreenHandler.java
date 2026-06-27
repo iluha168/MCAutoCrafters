@@ -1,5 +1,6 @@
 package com.iluha168.autocrafters.screen_handler;
 
+import com.iluha168.autocrafters.block.AutoGrindstoneBlock;
 import com.iluha168.autocrafters.block_entity.AutoGrindstoneBlockEntity;
 import com.iluha168.autocrafters.slots.PreviewSlot;
 
@@ -25,7 +26,13 @@ public class AutoGrindstoneScreenHandler extends BaseAutoScreenHandler {
 
     //Client constructor
     public AutoGrindstoneScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, new AutoGrindstoneBlockEntity(playerInventory.player.getBlockPos(), null), new ArrayPropertyDelegate(1));
+        this(syncId, playerInventory, new AutoGrindstoneBlockEntity(
+                playerInventory.player.getBlockPos(),
+                AutoGrindstoneBlock.BLOCK.getDefaultState(),
+                playerInventory.player.getWorld()
+            ),
+            new ArrayPropertyDelegate(1)
+        );
     }
 
     public AutoGrindstoneScreenHandler(int syncId, PlayerInventory playerInventory, SidedInventory inventory, PropertyDelegate propertyDelegate) {

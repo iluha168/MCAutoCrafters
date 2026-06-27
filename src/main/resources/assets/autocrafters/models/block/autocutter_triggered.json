@@ -1,0 +1,9 @@
+{
+  "parent": "autocrafters:block/autocutter",
+  "textures": {
+    "top": "autocrafters:block/autocutter_top_triggered",
+    "south": "autocrafters:block/autocutter_south_triggered",
+    "west": "autocrafters:block/autocutter_west_triggered",
+    "east": "autocrafters:block/autocutter_east_triggered"
+  }
+}

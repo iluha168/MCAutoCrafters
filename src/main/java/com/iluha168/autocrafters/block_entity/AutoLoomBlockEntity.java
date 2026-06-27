@@ -38,7 +38,7 @@ public class AutoLoomBlockEntity extends BaseAutoBlockEntity {
     public static final int MAX_DYE_LAYERS = 15;
 
     public AutoLoomBlockEntity(BlockPos pos, BlockState state) {
-        super(BLOCK_ENTITY, pos, state, 3);
+        super(BLOCK_ENTITY, pos, state, ALL_SLOTS.length);
     }
 
     private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
@@ -60,8 +60,6 @@ public class AutoLoomBlockEntity extends BaseAutoBlockEntity {
         public void set(int index, int value) {
             if(index != 0) throw new ArrayIndexOutOfBoundsException();
             patternIndex = value;
-            if(world != null)
-                world.updateComparators(pos, world.getBlockState(pos).getBlock());
         }
 
         @Override
